@@ -23,7 +23,7 @@ pub enum Commands {
 pub struct Payload {
     #[arg(short, long)]
     pub key: String,
-    #[arg(short, long)]
+    #[arg(help = "The file to be encrypted or decrypted")]
     pub input: String,
 }
 
