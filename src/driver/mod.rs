@@ -27,10 +27,7 @@ pub trait Driver {
     fn push_chunk(&mut self, chunk: DataChunk) -> Result<(), Self::Error>;
 
     /// Process the data with the specified cipher.
-    fn process<C>(&mut self, cipher: &mut C) -> Result<(), Self::Error>
-    where
-        C: Cipher,
-    {
+    fn process(&mut self, cipher: &mut dyn Cipher) -> Result<(), Self::Error> {
         while let Some(mut chunk) = self.pull_chunk()? {
             cipher.process_chunk(&mut chunk);
             self.push_chunk(chunk)?;

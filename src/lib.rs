@@ -3,6 +3,7 @@
 
 pub mod cipher;
 pub mod driver;
+pub mod ffi;
 pub mod key_init;
 pub mod types;
 
