@@ -1,0 +1,22 @@
+[package]
+name = "yafo"
+description = "Yet another file obfuscator"
+authors = ["Cyandev <unixzii@gmail.com>"]
+license = "MIT"
+repository = "https://github.com/Helixform/yafo"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[[bin]]
+name = "yafo-cli"
+path = "cli/main.rs"
+
+[dependencies]
+sha-1 = "0.10.1"
+generic-array = "0.14"
+
+[dev-dependencies]
+aes = "0.8.2"
+tea-soft = "0.3.0"
