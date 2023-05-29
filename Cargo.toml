@@ -1,22 +1,29 @@
 [package]
 name = "yafo"
 description = "Yet another file obfuscator"
-authors = ["Cyandev <unixzii@gmail.com>"]
+authors = ["Cyandev <unixzii@gmail.com>", "ktiays <cuansky@gmail.com>"]
 license = "MIT"
 repository = "https://github.com/Helixform/yafo"
 version = "0.1.0"
 edition = "2021"
 
+[features]
+cli = ["dep:clap", "dep:anyhow"]
+
 [lib]
 crate-type = ["lib", "staticlib"]
 
 [[bin]]
-name = "yafo-cli"
+name = "yafo"
 path = "cli/main.rs"
+doc = false
+required-features = ["cli"]
 
 [dependencies]
 sha-1 = "0.10.1"
 generic-array = "0.14"
+clap = { version = "4.3", features = ["derive"], optional = true }
+anyhow = { version = "1", optional = true }
 
 [dev-dependencies]
 aes = "0.8.2"
