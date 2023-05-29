@@ -19,6 +19,13 @@ path = "cli/main.rs"
 doc = false
 required-features = ["cli"]
 
+[profile.release]
+lto = true
+strip = true
+opt-level = 3
+codegen-units = 1
+panic = "abort"
+
 [dependencies]
 sha-1 = "0.10.1"
 generic-array = "0.14"
