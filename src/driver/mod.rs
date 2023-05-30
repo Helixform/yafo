@@ -1,5 +1,6 @@
 mod file;
 mod in_mem;
+pub mod statistics;
 
 pub use file::FileDriver;
 pub use in_mem::InMemoryDriver;
