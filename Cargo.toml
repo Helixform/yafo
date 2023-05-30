@@ -8,7 +8,7 @@ version = "0.1.0"
 edition = "2021"
 
 [features]
-cli = ["dep:clap", "dep:anyhow"]
+cli = ["dep:anyhow", "dep:clap", "dep:indicatif"]
 
 [lib]
 crate-type = ["lib", "staticlib"]
@@ -29,8 +29,9 @@ panic = "abort"
 [dependencies]
 sha-1 = "0.10.1"
 generic-array = "0.14"
-clap = { version = "4.3", features = ["derive"], optional = true }
 anyhow = { version = "1", optional = true }
+clap = { version = "4.3", features = ["derive"], optional = true }
+indicatif = { version = "0.17.4", optional = true }
 
 [build-dependencies]
 cbindgen = "0.24.3"
