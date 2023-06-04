@@ -2,6 +2,7 @@
 #![cfg_attr(test, feature(assert_matches))]
 
 pub mod cipher;
+#[cfg(feature = "ffi")]
 pub mod ffi;
 pub mod key_init;
 pub mod pipeline;
