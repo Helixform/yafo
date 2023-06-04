@@ -1,3 +1,5 @@
+//! Utility types.
+
 use std::iter::Cloned;
 use std::ops::{Index, IndexMut};
 use std::slice::Iter;

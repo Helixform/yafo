@@ -1,3 +1,7 @@
+//! Types for initial key derivation.
+//!
+//! See [`KeyInit`] for details.
+
 use sha1::{Digest, Sha1};
 
 use crate::types::DataChunk;

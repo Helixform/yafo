@@ -1,6 +1,22 @@
 #![feature(test)]
 #![cfg_attr(test, feature(assert_matches))]
 
+//! # Yafo (Yet Another File Obfuscator)
+//!
+//! Yafo is a minimalist file obfuscator, which can "encrypt" your file with
+//! the key derived from a given mnemonic phrase.
+//!
+//! It provides both CLI and library, so you can use it independently or
+//! embedded in your own apps. Yafo uses its own [algorithm](./docs/algorithm-design.md),
+//! and the key difference from other encryption algorithms (like AES) is
+//! that it's super fast.
+//!
+//! The library also supports FFI feature to export C APIs for being called
+//! from the programs developed by languages other than Rust. To do so, build
+//! the package with `ffi` feature.
+//!
+//! See the documentation of [pipeline] module for the entry point.
+
 pub mod cipher;
 #[cfg(feature = "ffi")]
 pub mod ffi;

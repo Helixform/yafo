@@ -1,6 +1,21 @@
+//! Cipher algorithms for both encryption and decryption.
+//!
+//! This module contains the [`Cipher`] trait which is implemented by
+//! [`EncryptState`] (for encryption) and [`DecryptState`] (for decryption).
+//! They can be used with [`Pipeline`] for any specified purpose.
+//!
+//! To create a cipher, you should use [`KeyInit::with_key`] method of
+//! the types that implement [`KeyInit`] trait.
+//!
+//! [`Pipeline`]: crate::pipeline::Pipeline
+//! [`KeyInit`]: crate::key_init::KeyInit
+//! [`KeyInit::with_key`]: crate::key_init::KeyInit::with_key
+
 use crate::types::DataChunk;
 
+/// Trait implemented by types that provide cipher algorithm.
 pub trait Cipher {
+    /// Processes a chunk of data.
     fn process_chunk(&mut self, chunk: &mut DataChunk);
 }
 

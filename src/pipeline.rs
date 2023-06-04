@@ -1,3 +1,30 @@
+//! Unified interface for using Yafo.
+//!
+//! This module provides the most important type [`Pipeline`] for
+//! encrypting or decrypting arbitrary data. You can create a
+//! pipeline and perform some configuration (e.g. attach a progress
+//! indicator). Then you can feed data into the pipeline and write
+//! the result to the output sink.
+//!
+//! ## Example
+//!
+//! To encrypt an in-memory data buffer:
+//!
+//! ```rust
+//! let plain_text = "hello";
+//! let seed_phrase = "you can not see me";
+//!
+//! let input = Cursor::new(plain_text.as_bytes());
+//! let mut output: Vec<u8> = vec![];
+//!
+//! // Create an encryption cipher with the given phrase.
+//! let encrypt = EncryptState::with_seed_phrase(seed_phrase);
+//!
+//! // Create the pipeline and encrypt the data.
+//! let pipeline = Pipeline::new();
+//! pipeline.process(input, &mut output, encrypt, None);
+//! ```
+
 use std::io::{BufReader, BufWriter, Read, Result, Write};
 use std::path::Path;
 
