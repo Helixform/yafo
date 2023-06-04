@@ -1,8 +1,12 @@
+mod reporter;
+
 use std::path::Path;
 
 use anyhow::Result;
 use clap::{arg, Parser, Subcommand};
 use yafo::{DecryptState, EncryptState, KeyInit, Pipeline};
+
+use reporter::Reporter;
 
 #[derive(Debug, Parser)]
 #[command(version, about = "Yet Another File Obfuscator")]
@@ -42,7 +46,9 @@ fn main() -> Result<()> {
         std::process::exit(1);
     }
 
-    let pipeline = Pipeline::new().with_buffer();
+    let pipeline = Pipeline::new()
+        .with_buffer()
+        .with_progress_reporter(Reporter::new(forward));
     let key = payload.key.as_str();
 
     if forward {
