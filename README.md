@@ -54,6 +54,8 @@ yafo decrypt --key <YOUR_KEY> /path/to/file-to-decrypt
 
 Note that any file will be treated transparently, whether it's encrypted or not. It means `yafo` will not check whether the given file is ever encrypted when you execute `yafo decrypt`. And you can also encrypt the same file multiple times with `yafo encrypt`.
 
+For better performance, you can use `--silent` option to run it without displaying the progress bar.
+
 ## FAQ
 
 ### What are the possible use cases of it?
