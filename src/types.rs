@@ -2,18 +2,20 @@ use std::iter::Cloned;
 use std::ops::{Index, IndexMut};
 use std::slice::Iter;
 
+pub const CHUNK_SIZE: usize = 8;
+
 /// Struct representing a fixed-length data chunk.
-#[derive(Debug, PartialEq, Eq, Clone, Copy)]
-pub struct DataChunk(pub [u8; 8]);
+#[derive(Default, Debug, PartialEq, Eq, Clone, Copy)]
+pub struct DataChunk(pub [u8; CHUNK_SIZE]);
 
 impl DataChunk {
     /// Extracts a slice containing the entire array.
-    pub fn as_slice(&self) -> &[u8; 8] {
+    pub fn as_slice(&self) -> &[u8; CHUNK_SIZE] {
         &self.0
     }
 
     /// Extracts a mutable slice containing the entire array.
-    pub fn as_mut_slice(&mut self) -> &mut [u8; 8] {
+    pub fn as_mut_slice(&mut self) -> &mut [u8; CHUNK_SIZE] {
         &mut self.0
     }
 }
@@ -21,6 +23,12 @@ impl DataChunk {
 impl From<[u8; 8]> for DataChunk {
     fn from(value: [u8; 8]) -> Self {
         Self(value)
+    }
+}
+
+impl AsRef<[u8]> for DataChunk {
+    fn as_ref(&self) -> &[u8] {
+        &self.0
     }
 }
 
