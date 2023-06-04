@@ -10,6 +10,9 @@ use crate::Cipher;
 pub trait ProgressReporter {
     /// Called when bytes of the given length are processed.
     ///
+    /// Argument `n` is the length of bytes processed in this round.
+    /// Note that it's not the length of total processed bytes.
+    ///
     /// An optional total size is presented when available.
     fn bytes_processed(&mut self, n: usize, total: Option<usize>);
 }
