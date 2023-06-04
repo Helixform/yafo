@@ -52,6 +52,15 @@ impl Cipher for DecryptState {
     }
 }
 
+impl<T> Cipher for &mut T
+where
+    T: Cipher + ?Sized,
+{
+    fn process_chunk(&mut self, chunk: &mut DataChunk) {
+        (*self).process_chunk(chunk)
+    }
+}
+
 #[inline(always)]
 fn calculate_sum(chunk: &DataChunk) -> u8 {
     let mut sum = 0;

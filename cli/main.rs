@@ -2,7 +2,7 @@ use std::path::Path;
 
 use anyhow::Result;
 use clap::{arg, Parser, Subcommand};
-use yafo::{driver::FileDriver, DecryptState, Driver, EncryptState, KeyInit};
+use yafo::{DecryptState, EncryptState, KeyInit, Pipeline};
 
 #[derive(Debug, Parser)]
 #[command(version, about = "Yet Another File Obfuscator")]
@@ -42,24 +42,20 @@ fn main() -> Result<()> {
         std::process::exit(1);
     }
 
-    // Open file with write permission.
-    let file = std::fs::OpenOptions::new()
-        .read(true)
-        .write(true)
-        .open(&payload.input)?;
-    let mut driver = FileDriver::new(file);
+    let pipeline = Pipeline::new().with_buffer();
     let key = payload.key.as_str();
+
     if forward {
-        let mut encrypt = EncryptState::with_seed_phrase(key);
-        driver.process(&mut encrypt)?;
+        let encrypt = EncryptState::with_seed_phrase(key);
+        pipeline.process_file(path, encrypt)?;
 
         // Rename the file and add the extension ".yafo" to it.
         let mut new_path = payload.input.clone();
         new_path.push_str(YAFO_FILE_EXTENSION);
         std::fs::rename(&payload.input, &new_path)?;
     } else {
-        let mut decrypt = DecryptState::with_seed_phrase(key);
-        driver.process(&mut decrypt)?;
+        let decrypt = DecryptState::with_seed_phrase(key);
+        pipeline.process_file(path, decrypt)?;
 
         // Check if the file name has the extension of ".yafo".
         // If it does, remove it. Otherwise, do nothing.

@@ -1,11 +1,10 @@
 use std::ffi::CStr;
-use std::fs::File;
 use std::os::raw::c_char;
 use std::sync::Mutex;
 
 use crate::cipher::{Cipher, DecryptState, EncryptState};
-use crate::driver::FileDriver;
-use crate::{Driver, KeyInit};
+use crate::pipeline::Pipeline;
+use crate::KeyInit;
 
 pub const ERR_OK: i32 = 0;
 pub const ERR_IO_ERROR: i32 = 1;
@@ -38,16 +37,12 @@ pub extern "C" fn yafo_process_file(handle: *mut Handle, path: *const c_char) ->
         Ok(str) => str,
         _ => return ERR_INVALID_PATH,
     };
-    let file = match File::options().read(true).write(true).open(path_str) {
-        Ok(file) => file,
-        _ => return ERR_IO_ERROR,
-    };
-    let mut file_driver = FileDriver::new(file);
 
     let handle_mut = unsafe { &mut *handle };
     let mut locked_cipher = handle_mut.cipher.lock().expect("lock the mutex");
 
-    match file_driver.process(locked_cipher.as_mut()) {
+    let pipeline = Pipeline::new();
+    match pipeline.process_file(path_str, locked_cipher.as_mut()) {
         Ok(_) => ERR_OK,
         Err(_) => ERR_IO_ERROR,
     }
