@@ -8,17 +8,19 @@ Yafo is a minimalist file obfuscator, which can "encrypt" your file with the key
 
 If you want to use it as a CLI program, you can install it on the supported platforms. Yafo supports various of platforms, and it's currently tested and distributed on the following platforms:
 
--   **macOS:** Fully supported and tested.
--   **Linux:** TBD.
--   **Windows:** TBD.
+-   macOS
+-   Linux
+-   Windows
 
 ### Install with Cargo
 
-TBD.
+```shell
+cargo install yafo --features=cli
+```
 
 ### From binaries
 
-Download the prebuilt binary from releases and execute it directly. You can append the executable path to environment variables manually if you want.
+Download the prebuilt binary from [releases](https://github.com/Helixform/yafo/releases) and execute it directly. You can append the executable path to environment variables manually if you want.
 
 ### From source
 
