@@ -1,5 +1,6 @@
 #![feature(test)]
 #![cfg_attr(test, feature(assert_matches))]
+#![cfg_attr(docsrs, feature(doc_cfg))]
 
 //! # Yafo (Yet Another File Obfuscator)
 //!
@@ -19,6 +20,7 @@
 
 pub mod cipher;
 #[cfg(feature = "ffi")]
+#[cfg_attr(docsrs, doc(cfg(feature = "ffi")))]
 pub mod ffi;
 pub mod key_init;
 pub mod pipeline;

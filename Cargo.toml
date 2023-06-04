@@ -9,6 +9,8 @@ edition = "2021"
 readme = "README.md"
 
 [features]
+default = []
+full = ["cli", "ffi"]
 cli = ["dep:anyhow", "dep:clap", "dep:indicatif"]
 ffi = []
 
@@ -41,3 +43,7 @@ cbindgen = "0.24.3"
 [dev-dependencies]
 aes = "0.8.2"
 tea-soft = "0.3.0"
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
