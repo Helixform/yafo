@@ -1,4 +1,4 @@
-#![feature(test)]
+#![cfg_attr(test, feature(test))]
 #![cfg_attr(test, feature(assert_matches))]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
