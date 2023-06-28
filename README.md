@@ -1,5 +1,7 @@
 # Yafo (Yet Another File Obfuscator)
 
+[![Build CLI](https://github.com/Helixform/yafo/actions/workflows/build_cli.yml/badge.svg?branch=main)](https://github.com/Helixform/yafo/actions/workflows/build_cli.yml)
+
 ## Introduction
 
 Yafo is a minimalist file obfuscator, which can "encrypt" your file with the key derived from a given mnemonic phrase. It provides both CLI and library, so you can use it independently or embedded in your own apps. Yafo uses its own [algorithm](./docs/algorithm-design.md), and the key difference from other encryption algorithms (like AES) is that it's super fast.
