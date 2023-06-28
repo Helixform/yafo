@@ -4,14 +4,14 @@ description = "Yet another file obfuscator"
 authors = ["Cyandev <unixzii@gmail.com>", "ktiays <cuansky@gmail.com>"]
 license = "MIT"
 repository = "https://github.com/Helixform/yafo"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 readme = "README.md"
 
 [features]
 default = []
 full = ["cli", "ffi"]
-cli = ["dep:anyhow", "dep:clap", "dep:indicatif"]
+cli = ["dep:anyhow", "dep:clap", "dep:indicatif", "dep:glob", "dep:rayon"]
 ffi = []
 
 [lib]
@@ -33,9 +33,12 @@ panic = "abort"
 [dependencies]
 sha-1 = "0.10.1"
 generic-array = "0.14"
+
 anyhow = { version = "1", optional = true }
 clap = { version = "4.3", features = ["derive"], optional = true }
 indicatif = { version = "0.17", optional = true }
+glob = { version = "0.3", optional = true }
+rayon = { version = "1.7", optional = true }
 
 [build-dependencies]
 cbindgen = "0.24.3"

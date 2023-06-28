@@ -4,6 +4,7 @@ use std::path::Path;
 
 use anyhow::Result;
 use clap::{arg, Parser, Subcommand};
+use rayon::prelude::*;
 use yafo::pipeline::ProgressReporter;
 use yafo::{Cipher, DecryptState, EncryptState, KeyInit, Pipeline};
 
@@ -30,8 +31,10 @@ pub struct Payload {
     pub key: String,
     #[arg(short, long, default_value = "false", help = "Run silently")]
     pub silent: bool,
-    #[arg(help = "The file to be encrypted or decrypted")]
+    #[arg(help = "The file or directory to be encrypted or decrypted")]
     pub input: String,
+    #[arg(short, long, default_value = "false", help = "Recursive mode")]
+    pub recursive: bool,
 }
 
 const YAFO_FILE_EXTENSION: &str = ".yafo";
@@ -58,19 +61,7 @@ where
     Ok(())
 }
 
-fn main() -> Result<()> {
-    let args = Cli::parse();
-    let (forward, payload) = match args.command {
-        Commands::Encrypt(payload) => (true, payload),
-        Commands::Decrypt(payload) => (false, payload),
-    };
-    // Check if file exists.
-    let path = Path::new(&payload.input);
-    if !path.exists() {
-        eprintln!("File not found: {}", path.display());
-        std::process::exit(1);
-    }
-
+fn process_file(path: &Path, forward: bool, payload: &Payload) -> Result<()> {
     let pipeline = Pipeline::new().with_buffer();
     let key = payload.key.as_str();
     let silent = payload.silent;
@@ -89,11 +80,51 @@ fn main() -> Result<()> {
 
         // Check if the file name has the extension of ".yafo".
         // If it does, remove it. Otherwise, do nothing.
-        let file_path = payload.input;
+        let file_path = payload.input.clone();
         if let Some(stripped) = file_path.strip_suffix(YAFO_FILE_EXTENSION) {
             std::fs::rename(&file_path, &stripped)?;
         }
     };
 
+    Ok(())
+}
+
+fn main() -> Result<()> {
+    let args = Cli::parse();
+    let (forward, payload) = match args.command {
+        Commands::Encrypt(payload) => (true, payload),
+        Commands::Decrypt(payload) => (false, payload),
+    };
+    // Check if file exists.
+    let path = Path::new(&payload.input);
+    let recursive = payload.recursive;
+
+    if !path.exists() {
+        eprintln!("file or directory not found: {}", path.display());
+        std::process::exit(1);
+    }
+    if path.is_dir() {
+        glob::glob(&format!(
+            "{}{}/*",
+            glob::Pattern::escape(&payload.input),
+            if recursive { "/**" } else { "" }
+        ))?
+        .collect::<Vec<_>>()
+        .into_par_iter()
+        .for_each(|entry| match entry {
+            Ok(path) => match process_file(path.as_path(), forward, &payload) {
+                Err(e) => eprintln!("{}", e),
+                _ => (),
+            },
+            Err(e) => eprintln!("{}", e),
+        });
+    } else {
+        if recursive {
+            eprintln!("recursive mode is only supported for a directory");
+            std::process::exit(1);
+        }
+    }
+
+    // process_file(path, forward, &payload)
     Ok(())
 }
