@@ -1,0 +1,34 @@
+name: Build CLI
+
+on:
+  push:
+    branches: ["main"]
+
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Rust
+      uses: actions-rs/toolchain@v1.0.6
+      with:
+        toolchain: stable
+
+    - name: Build
+      run: cargo build --features cli --release
+
+    - name: Package
+      working-directory: ./target/release
+      run: |
+        gzip -9 -f yafo
+        mv yafo.gz yafo-linux-gnu-x86_64.gz
+
+    - name: Upload
+      uses: actions/upload-artifact@v3
+      with:
+        path: ${{ github.workspace }}/target/release/yafo-linux-gnu-x86_64.gz
